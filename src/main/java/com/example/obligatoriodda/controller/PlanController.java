@@ -20,16 +20,21 @@ public class PlanController {
     @Autowired
     private PlanRepository planRepository;
 
-    @GetMapping({"/", ""})
-    public String listarPlanesIndex(Model modelo){
+    @GetMapping({"/",""})
+    public String mostrarIndex(Model modelo){
+        return "index.html";
+    }
+
+    @GetMapping("/listarPlanes")
+    public String listarPlanes(Model modelo){
         List<Plan> planes = planRepository.findAll();
         modelo.addAttribute("planes", planes);
-        return "index.html";
+        return "listarPlanes";
     }
 
     @GetMapping("/nuevoPlan")
     public String mostrarAltaPlan(Model modelo){
-        modelo.addAttribute("planes", new Plan());
+        modelo.addAttribute("plan", new Plan());
         return "nuevoPlan";
     }
 
@@ -47,17 +52,17 @@ public class PlanController {
 
     @GetMapping("/{id}/editarPlan")
     public String mostrarModificarPlan(@PathVariable Integer id, Model modelo){
-        Plan plan = planRepository.getById(id);
+        Plan plan = planRepository.getReferenceById(id);
         modelo.addAttribute("plan", plan);
         return "nuevoPlan";
     }
 
     @PostMapping("/{id}/editarPlan")
     public String modificarPlan(@PathVariable Integer id, @Validated Plan plan, BindingResult bindingResult, RedirectAttributes redirect, Model modelo){
-        Plan planDB = planRepository.getById(id);
+        Plan planDB = planRepository.getReferenceById(id);
         if(bindingResult.hasErrors()){
             modelo.addAttribute("plan", plan);
-            return "nuevoPlan";
+            return "pagina de editar";
         }
         
         planDB.setDestino(plan.getDestino());
@@ -66,15 +71,15 @@ public class PlanController {
         planDB.setPrecio(plan.getPrecio());
         planRepository.save(planDB);
         redirect.addFlashAttribute("mensaje", "Se modifico el plan correctamente.");
-        return "redirect:/";
+        return "redirect:/listarPlanes";
     }
 
     @PostMapping("{id}/eliminarPlan")
     public String eliminarPlan(@PathVariable Integer id, RedirectAttributes redirect){
-        Plan plan = planRepository.getById(id);
+        Plan plan = planRepository.getReferenceById(id);
         planRepository.delete(plan);
         redirect.addFlashAttribute("mensaje","Se elimino el plan correctamente");
-        return "redirect:/";
+        return "redirect:/listarPlanes";
         
     }
 }
