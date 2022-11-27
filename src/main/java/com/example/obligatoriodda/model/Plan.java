@@ -1,11 +1,15 @@
 package com.example.obligatoriodda.model;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.validation.constraints.Future;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -18,26 +22,33 @@ public class Plan {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    @Column (name="id_pla", length = 8)
+    private Integer id_pla;
+   
 
+    @Column (name="destino", length = 20)
     @NotBlank(message = "Debe ingresar un destino.")
     private String destino;
 
     @DateTimeFormat(iso = ISO.DATE)
     @Future
+    @Column (name= "fecha")
     @NotNull(message = "Debe ingresar la fecha del plan.")
     private LocalDate fecha;
 
+
+    @Column (name= "modalidad")
     private String modalidad;
 
+    @Column (name= "precio")
     private Double precio;
 
     public Integer getId() {
-        return id;
+        return id_pla;
     }
 
     public void setId(Integer id) {
-        this.id = id;
+        this.id_pla = id;
     }
 
     public String getDestino() {
@@ -72,5 +83,6 @@ public class Plan {
         this.precio = precio;
     }
 
-    
+    @ManyToMany(mappedBy = "Planlist")
+    public List<Cliente> departments = new ArrayList<>();
 }

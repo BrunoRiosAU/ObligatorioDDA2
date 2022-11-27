@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>Listar clientes - Turismo UY</title>
+        <link rel="stylesheet" type="text/css" href="styles.css">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+    </head>
+    <body>
+        <header>
+            <nav class="navbar navbar-expand-lg bg-light">
+                <div class="container-fluid">
+                  <a class="navbar-brand" href="/">Turismo UY</a>
+                  <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                  </button>
+                  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                      <li class="nav-item">
+                        <a class="nav-link" aria-current="page" href="/">Inicio</a>
+                      </li>
+                      <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle active" href="/" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                          Planes de viaje
+                        </a>
+                        <ul class="dropdown-menu">
+                          <li><a class="dropdown-item active" href="/listarPlanes">Listar planes</a></li>
+                          <li><a class="dropdown-item" href="/nuevoPlan">Ingresar planes</a></li>
+                        </ul>
+                      </li>
+                      <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="/" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                          Clientes
+                        </a>
+                        <ul class="dropdown-menu"> 
+                          <li><a class="dropdown-item" href="/listarCliente">Listar clientes</a></li>
+                          <li><a class="dropdown-item" href="/nuevoCliente">Ingresar clientes</a></li>
+                        </ul>
+                      </li>
+                      <li class="nav-item">
+                        <a class="nav-link" aria-current="page" href="/">Asignar clientes a viajes</a>
+                      </li>
+                    </ul>
+                  </div>
+                  <img class="imagen" style="margin-top: -20px;" width="1250px" height="50px" src="https://o.remove.bg/downloads/ab7c009f-6c96-4ef8-85ba-034b6db0a346/dibujo-vectorial-olas-frontera-costuras-mar_149326-4179-removebg-preview.png" alt="logo0">
+                </div>
+              </nav>
+        </header>
+        <div class="container-fluid">
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Nombre</th>
+                        <th>Apellido</th>
+                        <th>Ci</th>
+                        <th>Email</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="cliente: ${clientes}">
+                        <td th:text="${cliente.id}"></td>
+                        <td th:text="${cliente.nombre}"></td>
+                        <td th:text="${cliente.apellido}"></td>
+                        <td th:text="${cliente.ci}"></td>
+                        <td th:text="${cliente.email}"></td>
+                        <a th:href="@{/{id}/editarCliente/(id=${cliente.id})}" class="btn btn-warning">Modificar</a>
+                            <a href="#" onclick="eliminarCliente(this)" class="btn btn-danger">Eliminar</a>
+    
+                            <form th:action="@{/{id}/eliminarCliente/(id=${cliente.id})}"
+                                method="post"></form></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </body>
+    <script>
+        function eliminarCliente(elemento){
+            var ok = confirm('¿Está seguro de eliminar el cliente?');
+            
+            if(ok){
+                elemento.nextElementSibling.submit();
+            }
+        }
+     </script>
+</html>
