@@ -66,11 +66,16 @@
                         <td th:text="${cliente.apellido}"></td>
                         <td th:text="${cliente.ci}"></td>
                         <td th:text="${cliente.email}"></td>
-                        <a th:href="@{/{id}/editarCliente/(id=${cliente.id})}" class="btn btn-warning">Modificar</a>
+                        <td> <a th:href="@{/{id}/editarCliente/(id=${cliente.id})}" class="btn btn-warning">Modificar</a>
+                          <a th:href="@{/{id}/listarClienteXViaje/(id=${cliente.id})}" class="btn btn-warning">Ver Planes</a>
                             <a href="#" onclick="eliminarCliente(this)" class="btn btn-danger">Eliminar</a>
     
                             <form th:action="@{/{id}/eliminarCliente/(id=${cliente.id})}"
-                                method="post"></form></td>
+                                method="post"></form>
+                                
+                              
+                              
+                              </td>
                     </tr>
                 </tbody>
             </table>

@@ -37,9 +37,13 @@ public class Plan {
     private LocalDate fecha;
 
 
+    @NotBlank(message = "Debe ingresar la modalidad del plan.")
     @Column (name= "modalidad")
     private String modalidad;
 
+
+
+    @NotNull(message = "Debe ingresar la precio del plan.")
     @Column (name= "precio")
     private Double precio;
 
@@ -84,5 +88,5 @@ public class Plan {
     }
 
     @ManyToMany(mappedBy = "Planlist")
-    public List<Cliente> departments = new ArrayList<>();
+    public List<Cliente> clie = new ArrayList<>();
 }

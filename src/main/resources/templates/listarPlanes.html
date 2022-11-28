@@ -35,8 +35,8 @@
                           Clientes
                         </a>
                         <ul class="dropdown-menu">
-                          <li><a class="dropdown-item" href="/">Listar clientes</a></li>
-                          <li><a class="dropdown-item" href="/">Ingresar clientes</a></li>
+                          <li><a class="dropdown-item" href="/listarCliente">Listar clientes</a></li>
+                          <li><a class="dropdown-item" href="/nuevoCliente">Ingresar clientes</a></li>
                         </ul>
                       </li>
                       <li class="nav-item">
@@ -66,7 +66,7 @@
                         <td th:text="${#temporals.format(plan.fecha,'dd/MM/YYYY')}"></td>
                         <td th:text="${plan.modalidad}"></td>
                         <td th:text="${plan.precio}"></td>
-                        <a th:href="@{/{id}/editarPlan/(id=${plan.id})}" class="btn btn-warning">Modificar</a>
+                      <td> <a th:href="@{/{id}/editarPlan/(id=${plan.id})}" class="btn btn-warning">Modificar</a>
                             <a href="#" onclick="eliminarPlan(this)" class="btn btn-danger">Eliminar</a>
     
                             <form th:action="@{/{id}/eliminarPlan/(id=${plan.id})}"

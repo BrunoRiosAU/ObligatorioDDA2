@@ -1,5 +1,6 @@
 package com.example.obligatoriodda.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,11 +13,15 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.example.obligatoriodda.model.Cliente;
 import com.example.obligatoriodda.model.Plan;
+import com.example.obligatoriodda.repository.ClienteRepository;
 import com.example.obligatoriodda.repository.PlanRepository;
 
 @Controller
 public class PlanController {
+    @Autowired
+    private ClienteRepository clienteRepository;
     @Autowired
     private PlanRepository planRepository;
 
@@ -31,6 +36,41 @@ public class PlanController {
         modelo.addAttribute("planes", planes);
         return "listarPlanes";
     }
+
+    @GetMapping("/{id}/agregarPlanes")
+    public String agregarPlanes(@PathVariable Integer id, Model modelo) {
+        Cliente cliente = clienteRepository.getReferenceById(id);
+        List<Plan> planesInCli = cliente.ListPlan();
+        List<Plan> PlanesALL = planRepository.findAll();
+        List<Plan> PlanesNotInCli = new ArrayList<>();
+        int contador = 0;
+        System.out.print(planesInCli.isEmpty());
+        if(planesInCli.isEmpty()){
+
+         
+        for (Plan planAll : PlanesALL) {
+            contador = 0;
+            for (Plan planInCli : planesInCli) {
+                if (planAll.getId().equals(planInCli.getId())) {
+
+                    contador++;
+                }
+            }
+            if (contador == 0) {
+                PlanesNotInCli.add(planAll);
+
+            }
+
+        }
+        modelo.addAttribute("planes", PlanesNotInCli);
+        return "AgregarClienteAplan";
+    }
+    else{
+        modelo.addAttribute("planes", PlanesALL);
+        return "AgregarClienteAplan";
+
+    }
+}
 
     @GetMapping("/nuevoPlan")
     public String mostrarAltaPlan(Model modelo){

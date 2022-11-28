@@ -45,7 +45,7 @@ public class Cliente {
 
 
     @Column (name="ci", length = 8)
-    @NotNull(message = "Debe ingresar la cedula.")
+    @NotBlank(message = "Debe ingresar la cedula.")
     private  String ci;
 
     public String getCi() {
@@ -58,7 +58,7 @@ public class Cliente {
 
 
     @Column (name="nombre", length = 30)
-    @NotNull(message = "Debe ingresar el nombre.")
+    @NotBlank(message = "Debe ingresar el nombre.")
     private String nombre;
 
     public void setNombre(String nombre) {
@@ -70,7 +70,7 @@ public class Cliente {
     }
 
     @Column (name="apellido", length = 30)
-    @NotNull(message = "Debe ingresar el apellido.")
+    @NotBlank(message = "Debe ingresar el apellido.")
     private String apellido;
 
     public void setApellido(String apellido) {
@@ -83,7 +83,7 @@ public class Cliente {
 
     @Column (name="email", length = 30)
     @Email
-    @NotNull(message = "Debe ingresar el Email.")
+    @NotBlank(message = "Debe ingresar el Email.")
     private String email;
 
     public void setEmail(String email) {
@@ -115,7 +115,10 @@ public void removeEmployee(Plan plan) {
   
 }
 
-
+public List<Plan> ListPlan() {
+  return Planlist;
+  
+}
 
 
 }
