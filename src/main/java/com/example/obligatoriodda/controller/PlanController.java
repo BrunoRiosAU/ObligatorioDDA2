@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.example.obligatoriodda.Service.ClienteServiceImp;
+import com.example.obligatoriodda.Service.PlanServiceImp;
 import com.example.obligatoriodda.model.Cliente;
 import com.example.obligatoriodda.model.Plan;
 import com.example.obligatoriodda.repository.ClienteRepository;
@@ -21,9 +23,9 @@ import com.example.obligatoriodda.repository.PlanRepository;
 @Controller
 public class PlanController {
     @Autowired
-    private ClienteRepository clienteRepository;
+    ClienteServiceImp serviceImp;
     @Autowired
-    private PlanRepository planRepository;
+    PlanServiceImp planServiceImp;
 
     @GetMapping({"/",""})
     public String mostrarIndex(Model modelo){
@@ -32,20 +34,20 @@ public class PlanController {
 
     @GetMapping("/listarPlanes")
     public String listarPlanes(Model modelo){
-        List<Plan> planes = planRepository.findAll();
+        List<Plan> planes = planServiceImp.findAll();
         modelo.addAttribute("planes", planes);
         return "listarPlanes";
     }
 
     @GetMapping("/{id}/agregarPlanes")
     public String agregarPlanes(@PathVariable Integer id, Model modelo) {
-        Cliente cliente = clienteRepository.getReferenceById(id);
+        Cliente cliente = serviceImp.findById(id);
         List<Plan> planesInCli = cliente.ListPlan();
-        List<Plan> PlanesALL = planRepository.findAll();
+        List<Plan> PlanesALL = planServiceImp.findAll();
         List<Plan> PlanesNotInCli = new ArrayList<>();
         int contador = 0;
         System.out.print(planesInCli.isEmpty());
-        if(planesInCli.isEmpty()){
+        if(!planesInCli.isEmpty()){
 
          
         for (Plan planAll : PlanesALL) {
@@ -85,21 +87,21 @@ public class PlanController {
             return "nuevoPlan";
         }
 
-        planRepository.save(plan);
+        planServiceImp.save(plan);
         redirect.addFlashAttribute("mensaje", "Se añadio el plan correctamente.");
         return "redirect:/";
     }
 
     @GetMapping("/{id}/editarPlan")
     public String mostrarModificarPlan(@PathVariable Integer id, Model modelo){
-        Plan plan = planRepository.getReferenceById(id);
+        Plan plan = planServiceImp.findById(id);
         modelo.addAttribute("plan", plan);
         return "nuevoPlan";
     }
 
     @PostMapping("/{id}/editarPlan")
     public String modificarPlan(@PathVariable Integer id, @Validated Plan plan, BindingResult bindingResult, RedirectAttributes redirect, Model modelo){
-        Plan planDB = planRepository.getReferenceById(id);
+        Plan planDB = planServiceImp.findById(id);
         if(bindingResult.hasErrors()){
             modelo.addAttribute("plan", plan);
             return "pagina de editar";
@@ -109,15 +111,15 @@ public class PlanController {
         planDB.setFecha(plan.getFecha());
         planDB.setModalidad(plan.getModalidad());
         planDB.setPrecio(plan.getPrecio());
-        planRepository.save(planDB);
+        planServiceImp.save(planDB);
         redirect.addFlashAttribute("mensaje", "Se modifico el plan correctamente.");
         return "redirect:/listarPlanes";
     }
 
     @PostMapping("{id}/eliminarPlan")
     public String eliminarPlan(@PathVariable Integer id, RedirectAttributes redirect){
-        Plan plan = planRepository.getReferenceById(id);
-        planRepository.delete(plan);
+        Plan plan = planServiceImp.findById(id);
+        planServiceImp.delete(plan);
         redirect.addFlashAttribute("mensaje","Se elimino el plan correctamente");
         return "redirect:/listarPlanes";
         

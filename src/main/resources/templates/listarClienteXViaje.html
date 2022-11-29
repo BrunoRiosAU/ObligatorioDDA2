@@ -50,7 +50,7 @@
         </header>
    
         <div class="container-fluid">
-            <li><a class="dropdown-item" href="/{id}/agregarPlanes">Agregar plan</a></li>
+            <li><a class="dropdown-item" th:href="@{/{id}/agregarPlanes/(id=${id})}">Agregar plan</a></li>
             <table class="table table-hover">
                 <thead>
                     <tr>

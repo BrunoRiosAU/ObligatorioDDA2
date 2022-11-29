@@ -70,19 +70,20 @@
                         <td th:text="${#temporals.format(plan.fecha,'dd/MM/YYYY')}"></td>
                         <td th:text="${plan.modalidad}"></td>
                         <td th:text="${plan.precio}"></td>
-                      <td> <a th:href="@{/{id}/editarPlan/(id=${plan.id})}" class="btn btn-warning">Agregar</a>
-                            <a href="#" onclick="eliminarPlan(this)" class="btn btn-danger">Eliminar</a>
-    
-                            <form th:action="@{/{id}/eliminarPlan/(id=${plan.id})}"
-                                method="post"></form></td>
+                      <td> <a href="#"  onclick="agregarPlan(this)" class="btn btn-warning">Agregar</a>
+                        <form th:action="@{/{id}/{idPla}/AgregarClienteAPlan(idPla=${plan.id},id=${id})}"
+  method="post"></form>
+                   
+                      </td> 
+                     
                     </tr>
                 </tbody>
             </table>
         </div>
     </body>
     <script>
-        function eliminarPlan(elemento){
-            var ok = confirm('¿Está seguro de eliminar el plan?');
+        function agregarPlan(elemento){
+            var ok = confirm('¿Está seguro de agregar el plan?');
             
             if(ok){
                 elemento.nextElementSibling.submit();
