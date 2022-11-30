@@ -1,89 +1,94 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title>Listar planes por cliente - Turismo UY</title>
-        <link rel="stylesheet" type="text/css" href="styles.css">
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
-    </head>
-    <body>
-        <header>
-            <nav class="navbar navbar-expand-lg bg-light">
-                <div class="container-fluid">
-                  <a class="navbar-brand" href="/">Turismo UY</a>
-                  <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                  </button>
-                  <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                      <li class="nav-item">
-                        <a class="nav-link" aria-current="page" href="/">Inicio</a>
-                      </li>
-                      <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle active" href="/" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                          Planes de viaje
-                        </a>
-                        <ul class="dropdown-menu">
-                          <li><a class="dropdown-item active" href="/listarPlanes">Listar planes</a></li>
-                          <li><a class="dropdown-item" href="/nuevoPlan">Ingresar planes</a></li>
-                        </ul>
-                      </li>
-                      <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="/" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                          Clientes
-                        </a>
-                        <ul class="dropdown-menu">
-                          <li><a class="dropdown-item" href="/listarCliente">Listar clientes</a></li>
-                          <li><a class="dropdown-item" href="/nuevoCliente">Ingresar clientes</a></li>
-                        </ul>
-                      </li>
-                      <li class="nav-item">
-                        <a class="nav-link" aria-current="page" href="/">Asignar clientes a viajes</a>
-                      </li>
-                    </ul>
-                  </div>
-                  <img class="imagen" style="margin-top: -20px;" width="1250px" height="50px" src="https://o.remove.bg/downloads/ab7c009f-6c96-4ef8-85ba-034b6db0a346/dibujo-vectorial-olas-frontera-costuras-mar_149326-4179-removebg-preview.png" alt="logo0">
-                </div>
-              </nav>
-        </header>
-   
-        <div class="container-fluid">
-            <li><a class="dropdown-item" th:href="@{/{id}/agregarPlanes/(id=${id})}">Agregar plan</a></li>
-            <table class="table table-hover">
-                <thead>
-                    <tr>
-                        <th>Id</th>
-                        <th>Destino</th>
-                        <th>Fecha</th>
-                        <th>Modalidad</th>
-                        <th>Precio</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr th:each="plan : ${planes}">
-                        <td th:text="${plan.id}"></td>
-                        <td th:text="${plan.destino}"></td>
-                        <td th:text="${#temporals.format(plan.fecha,'dd/MM/YYYY')}"></td>
-                        <td th:text="${plan.modalidad}"></td>
-                        <td th:text="${plan.precio}"></td>
-                      <td> 
-                            <a href="#" onclick="" class="btn btn-danger">Eliminar</a>
-    
-                            </form></td>
-                    </tr>
-                </tbody>
-            </table>
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title>Listar planes por cliente - Turismo UY</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"
+    crossorigin="anonymous"></script>
+</head>
+
+<body>
+  <header>
+    <nav class="navbar navbar-expand-lg bg-light">
+      <div class="container-fluid">
+        <a class="navbar-brand" href="/">Turismo UY</a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+          aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a class="nav-link" aria-current="page" href="/">Inicio</a>
+            </li>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle" href="/" role="button" data-bs-toggle="dropdown"
+                aria-expanded="false">
+                Planes de viaje
+              </a>
+              <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="/listarPlanes">Listar planes</a></li>
+                <li><a class="dropdown-item" href="/nuevoPlan">Ingresar planes</a></li>
+              </ul>
+            </li>
+            <li class="nav-item dropdown">
+              <a class="nav-link dropdown-toggle active" href="/" role="button" data-bs-toggle="dropdown"
+                aria-expanded="false">
+                Clientes
+              </a>
+              <ul class="dropdown-menu">
+                <li><a class="dropdown-item active" href="/listarCliente">Listar clientes</a></li>
+                <li><a class="dropdown-item" href="/nuevoCliente">Ingresar clientes</a></li>
+              </ul>
+            </li>
+          </ul>
         </div>
-    </body>
-    <script>
-        function eliminarPlan(elemento){
-            var ok = confirm('¿Está seguro de eliminar el plan?');
-            
-            if(ok){
-                elemento.nextElementSibling.submit();
-            }
-        }
-     </script>
+        <img class="imagen" style="margin-top: -20px;" width="1250px" height="50px"
+          src="https://img.freepik.com/vector-premium/dibujo-vectorial-olas-fondo-natural-mar_149326-3030.jpg?w=2000"
+          alt="logo0">
+      </div>
+    </nav>
+  </header>
+
+  <div class="container">
+    <a th:href="@{/{id}/agregarPlanes/(id=${id})}" class="btn btn-success">Agregar plan</a>
+    <table class="table table-hover">
+      <thead>
+        <tr>
+          <th>Id</th>
+          <th>Destino</th>
+          <th>Fecha</th>
+          <th>Modalidad</th>
+          <th>Precio</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr th:each="plan : ${planes}">
+          <td th:text="${plan.id}"></td>
+          <td th:text="${plan.destino}"></td>
+          <td th:text="${#temporals.format(plan.fecha,'dd/MM/YYYY')}"></td>
+          <td th:text="${plan.modalidad}"></td>
+          <td th:text="${plan.precio}"></td>
+          <td> <a href="#" onclick="eliminarPlan(this)" class="btn btn-danger">Eliminar</a>
+            <form th:action="@{/{id}/{idPla}/eliminarPlanDeCliente(id=${id},idPla=${plan.id})}" method="post"></form></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</body>
+<script>
+  function eliminarPlan(elemento) {
+    var ok = confirm('¿Está seguro de eliminar el plan?');
+
+    if (ok) {
+      elemento.nextElementSibling.submit();
+    }
+  }
+</script>
+
 </html>

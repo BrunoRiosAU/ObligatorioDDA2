@@ -17,8 +17,6 @@ import com.example.obligatoriodda.Service.ClienteServiceImp;
 import com.example.obligatoriodda.Service.PlanServiceImp;
 import com.example.obligatoriodda.model.Cliente;
 import com.example.obligatoriodda.model.Plan;
-import com.example.obligatoriodda.repository.ClienteRepository;
-import com.example.obligatoriodda.repository.PlanRepository;
 
 @Controller
 public class PlanController {
@@ -59,6 +57,9 @@ public class PlanController {
                 }
             }
             if (contador == 0) {
+                if (planesInCli.size() == 3) {
+                    planAll.setPrecio(planAll.getPrecio() * 0.8);
+                }
                 PlanesNotInCli.add(planAll);
 
             }
@@ -89,7 +90,7 @@ public class PlanController {
 
         planServiceImp.save(plan);
         redirect.addFlashAttribute("mensaje", "Se añadio el plan correctamente.");
-        return "redirect:/";
+        return "redirect:/listarPlanes";
     }
 
     @GetMapping("/{id}/editarPlan")
@@ -104,7 +105,7 @@ public class PlanController {
         Plan planDB = planServiceImp.findById(id);
         if(bindingResult.hasErrors()){
             modelo.addAttribute("plan", plan);
-            return "pagina de editar";
+            return "nuevoPlan";
         }
         
         planDB.setDestino(plan.getDestino());
@@ -124,4 +125,6 @@ public class PlanController {
         return "redirect:/listarPlanes";
         
     }
+
+    
 }

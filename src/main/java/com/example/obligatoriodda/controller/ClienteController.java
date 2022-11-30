@@ -15,20 +15,20 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.obligatoriodda.model.Cliente;
 import com.example.obligatoriodda.model.Plan;
-
+import com.example.obligatoriodda.repository.ClienteRepository;
 import com.example.obligatoriodda.Service.ClienteServiceImp;
 import com.example.obligatoriodda.Service.PlanServiceImp;;
 
 @Controller
 public class ClienteController {
     @Autowired
-    ClienteServiceImp serviceImp;
+    ClienteServiceImp clienteServiceImp;
     @Autowired
     PlanServiceImp planServiceImp;
 
     @GetMapping("/listarCliente")
     public String listarClientes(Model modelo) {
-        List<Cliente> clientes = serviceImp.findAll();
+        List<Cliente> clientes = clienteServiceImp.findAll();
         modelo.addAttribute("clientes", clientes);
         return "listarCliente";
     }
@@ -47,14 +47,14 @@ public class ClienteController {
             return "nuevoCliente";
         }
 
-        serviceImp.save(cliente);
+        clienteServiceImp.save(cliente);
         redirect.addFlashAttribute("mensaje", "Se añadio el cliente correctamente.");
-        return "redirect:/";
+        return "redirect:/listarCliente";
     }
 
     @GetMapping("/{id}/editarCliente")
     public String mostrarModificarCliente(@PathVariable Integer id, Model modelo) {
-        Cliente cliente = serviceImp.findById(id);
+        Cliente cliente = clienteServiceImp.findById(id);
         modelo.addAttribute("cliente", cliente);
         return "nuevoCliente";
     }
@@ -62,10 +62,10 @@ public class ClienteController {
     @PostMapping("/{id}/editarCliente")
     public String modificarCliente(@PathVariable Integer id, @Validated Cliente cliente, BindingResult bindingResult,
             RedirectAttributes redirect, Model modelo) {
-        Cliente cliDB = serviceImp.findById(id);
+        Cliente cliDB = clienteServiceImp.findById(id);
         if (bindingResult.hasErrors()) {
             modelo.addAttribute("cliente", cliente);
-            return "pagina de editar";
+            return "nuevoCliente";
         }
 
         cliDB.setApellido(cliente.getApellido());
@@ -73,16 +73,16 @@ public class ClienteController {
         cliDB.setNombre(cliente.getNombre());
         cliDB.setEmail(cliente.getEmail());
 
-        serviceImp.save(cliDB);
+        clienteServiceImp.save(cliDB);
         redirect.addFlashAttribute("mensaje", "Se modifico el cliente correctamente.");
         return "redirect:/listarCliente";
     }
 
     @PostMapping("{id}/eliminarCliente")
     public String eliminarCli(@PathVariable Integer id, RedirectAttributes redirect) {
-        Cliente cliente = serviceImp.findById(id);
-        serviceImp.delete(cliente);
-        redirect.addFlashAttribute("mensaje", "Se elimino el cliente correctamente");
+        Cliente cliente = clienteServiceImp.findById(id);
+        clienteServiceImp.delete(cliente);
+        redirect.addFlashAttribute("mensaje", "Se elimino el cliente correctamente.");
         return "redirect:/listarCliente";
 
     }
@@ -90,12 +90,12 @@ public class ClienteController {
     @GetMapping("/{id}/listarClienteXViaje")
     public String listarViajeXcliente(@PathVariable Integer id, Model modelo, RedirectAttributes redirect) {
 
-        Cliente cliente = serviceImp.findById(id);
+        Cliente cliente = clienteServiceImp.findById(id);
         List<Plan> planes = cliente.ListPlan();
 
         if (planes.isEmpty()) {
 
-            redirect.addFlashAttribute("mensaje", "No existe plan asignado a este cliente");
+            redirect.addFlashAttribute("mensaje", "No existe plan asignado a este cliente.");
             return "redirect:/{id}/agregarPlanes";
 
         } else {
@@ -107,17 +107,30 @@ public class ClienteController {
     }
 
     @PostMapping("/{id}/{idPla}/AgregarClienteAPlan")
-    public String agregarClienteAViaje(@PathVariable Integer id, @PathVariable Integer idPla,  
-            RedirectAttributes redirect, Model modelo) {
+    public String agregarClienteAViaje(@PathVariable Integer id, @PathVariable Integer idPla, RedirectAttributes redirect) {
    
-        Cliente cliente = serviceImp.findById(id);
+        Cliente cliente = clienteServiceImp.findById(id);
         Plan uPlan = planServiceImp.findById(idPla);
       
         cliente.addPlan(uPlan);
-        serviceImp.save(cliente);
+        clienteServiceImp.save(cliente);
 
         redirect.addFlashAttribute("mensaje", "Se añadio el plan al cliente correctamente.");
-        return "redirect:/";
+        return "redirect:/listarCliente";
+    }
+
+    @PostMapping("{id}/{idPla}/eliminarPlanDeCliente")
+    public String eliminarPlanXCliente(@PathVariable Integer id, @PathVariable Integer idPla, RedirectAttributes redirect){
+        Cliente cliente = clienteServiceImp.findById(id);
+        for(Plan plan : cliente.ListPlan()){
+            if(plan.getId().equals(idPla)){
+                cliente.removePlan(plan);
+                redirect.addFlashAttribute("mensaje","Se elimino el plan correctamente");
+                return "redirect:/listarCliente";
+            }
+        }
+        redirect.addFlashAttribute("mensaje","No se pudo eliminar el plan correctamente");
+        return "redirect:/listarCliente";
     }
 
  
