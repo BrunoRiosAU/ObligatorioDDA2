@@ -44,7 +44,7 @@ public class PlanController {
         List<Plan> PlanesALL = planServiceImp.findAll();
         List<Plan> PlanesNotInCli = new ArrayList<>();
         int contador = 0;
-        System.out.print(planesInCli.isEmpty());
+ 
         if(!planesInCli.isEmpty()){
 
          
@@ -57,8 +57,10 @@ public class PlanController {
                 }
             }
             if (contador == 0) {
-                if (planesInCli.size() == 3) {
+                if (planesInCli.size() >= 3) {
                     planAll.setPrecio(planAll.getPrecio() * 0.8);
+                 
+                  
                 }
                 PlanesNotInCli.add(planAll);
 
@@ -117,9 +119,20 @@ public class PlanController {
         return "redirect:/listarPlanes";
     }
 
+
+
+
+
+
     @PostMapping("{id}/eliminarPlan")
     public String eliminarPlan(@PathVariable Integer id, RedirectAttributes redirect){
         Plan plan = planServiceImp.findById(id);
+
+        for(Cliente cliente : plan.ListClientes()){
+            if(plan.getId().equals(id))
+            cliente.removePlan(plan);
+            serviceImp.save(cliente);
+        }
         planServiceImp.delete(plan);
         redirect.addFlashAttribute("mensaje","Se elimino el plan correctamente");
         return "redirect:/listarPlanes";

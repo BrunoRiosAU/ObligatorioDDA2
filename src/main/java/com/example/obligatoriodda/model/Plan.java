@@ -51,6 +51,10 @@ public class Plan {
         return id_pla;
     }
 
+
+
+
+
     public void setId(Integer id) {
         this.id_pla = id;
     }
@@ -83,10 +87,25 @@ public class Plan {
         return precio;
     }
 
+    public Double getPrecioDesc() {
+        Double p =getPrecio();
+       double preDesc= p * 0.8;
+        return preDesc;
+    }
+
+
+
+
+
     public void setPrecio(Double precio) {
         this.precio = precio;
     }
 
     @ManyToMany(mappedBy = "Planlist")
     public List<Cliente> clie = new ArrayList<>();
+
+    public List<Cliente> ListClientes() {
+        return clie;
+        
+      }
 }

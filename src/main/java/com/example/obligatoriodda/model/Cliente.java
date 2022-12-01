@@ -27,6 +27,19 @@ public class Cliente {
 
 
 
+    @Column (name="tipo", length = 1)
+    private String tipo;
+
+    public String getTipo() {
+        return tipo;
+    }
+
+    public void SetTipo(String Tipo) {
+        this.tipo = Tipo;
+    }
+
+
+
     public Integer getId() {
         return id_cli;
     }

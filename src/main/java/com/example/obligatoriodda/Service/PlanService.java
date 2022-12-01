@@ -1,5 +1,6 @@
 package com.example.obligatoriodda.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.boot.autoconfigure.data.web.SpringDataWebProperties.Pageable;
@@ -13,6 +14,8 @@ public interface PlanService  {
     public Plan findById(Integer Ci);
     public Plan save(Plan plan);
     public void delete(Plan plan);
+    public List<Plan> findByFechaLike(LocalDate fecha);
     public Page<Plan> findAll(Pageable pageable);
+    public List<Plan> findAllOrderByFecha(LocalDate fecha);
 
 }

@@ -55,8 +55,21 @@
     </nav>
   </header>
 
+
+
   <div class="container">
+ 
     <a th:href="@{/{id}/agregarPlanes/(id=${id})}" class="btn btn-success">Agregar plan</a>
+ 
+    <form   th:action="@{'/{id}/listarClienteXViaje/'+${fecha}(id=${id})}" method=""   > 
+    <div class="mb-3">
+    
+      <label>Fecha: </label> <input id="fecha" type="date" name="fecha"  class="form-control">
+      <button  class="btn mt-2 btn-success">Buscar plan </button >
+    </div>
+    
+</form>
+
     <table class="table table-hover">
       <thead>
         <tr>
@@ -68,6 +81,8 @@
         </tr>
       </thead>
       <tbody>
+
+
         <tr th:each="plan : ${planes}">
           <td th:text="${plan.id}"></td>
           <td th:text="${plan.destino}"></td>
